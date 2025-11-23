@@ -3,6 +3,7 @@
 #include <queue>
 #include <string>
 #include <climits>
+#include <functional>
 using namespace std;
 
 const int SIZE = 13;
@@ -166,7 +167,54 @@ public:
                 cout << start << " -> " << v << " : " << dist[v] << endl;
             }
         }
+        cout << endl;
     }
+
+    // mst prims
+    void mst(){
+        vector<bool> inMST(SIZE, false);
+        vector<int> key(SIZE, INT_MAX);
+        vector<int> parent(SIZE, -1);
+
+        for (int start = 0; start < SIZE; ++start) {
+            if (inMST[start] || adjList[start].empty()) continue;
+
+            priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+
+            key[start] = 0;
+            pq.push({0, start});
+
+            while (!pq.empty()) {
+                auto [currKey, u] = pq.top();
+                pq.pop();
+
+                if (inMST[u]) continue;
+                inMST[u] = true;
+
+                for (auto &edge : adjList[u]) {
+                    int v = edge.first;
+                    int w = edge.second;
+
+                    if (!inMST[v] && w < key[v]) {
+                        key[v] = w;
+                        parent[v] = u;
+                        pq.push({key[v], v});
+                    }
+                }
+            }
+        }
+
+        cout << "Minimum Spanning Tree edges:" << endl;
+        for (int v = 0; v < SIZE; ++v) {
+            if (parent[v] != -1 && key[v] != INT_MAX) {
+                cout << "Edge from " << v << " to " << parent[v]
+                     << " with capacity: " << key[v] << " units" << endl;
+            }
+        }
+        cout << endl;
+
+    }
+
 };
 
 int main() {
@@ -193,6 +241,7 @@ int main() {
     graph.BFS(0);
 
     graph.shortestPath(0);
+    graph.mst();
 
     return 0;
 }
