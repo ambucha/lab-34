@@ -229,19 +229,53 @@ int main() {
     // Creates graph
     Graph graph(edges);
 
-    cout << "=== Logistics Routing Application ===" << endl;
-    cout << "Nodes represent logistics facilities; edges represent delivery routes\n"
-         << "with travel times in minutes.\n\n";
+    // create a do while loop for the menu
+    int choice;
+    do{
+        cout << endl << "Logistics Routing Menu:" << endl;
+        cout << "[1] Display delivery network" << endl;
+        cout << "[2] Explore delivery coverage (BFS)" << endl;
+        cout << "[3] Trace delivery route (DFS)" << endl;
+        cout << "[4] Calculate shortest paths" << endl;
+        cout << "[5] Find Minimum Spanning Tree" << endl;
+        cout << "[0] Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
 
+        // now create the options for the menu
+        switch(choice) {
+            case 1:
+                cout << endl;
+                graph.printGraph();
+                break;
+            
+            case 2:
+                cout << endl << "Starting BFS from " << FACILITY_NAMES[0] << "..." << endl;
+                graph.BFS(0);
+                break;
+            
+            case 3:
+                cout << endl << "Starting DFS from " << FACILITY_NAMES[0] << "..." << endl << endl;
+                graph.DFS(0);
+                break;
 
-    // Prints adjacency list representation of graph
-    graph.printGraph();
+            case 4:
+                graph.shortestPath(0);
+                break;
+            
+            case 5:
+                cout << endl;
+                graph.mst();
+                break;
 
-    graph.DFS(0);
-    graph.BFS(0);
+            case 0:
+                cout << "Exiting..." << endl;
+                break;
 
-    graph.shortestPath(0);
-    graph.mst();
+            default:
+                cout << "Invalid choice, try again" << endl;
+        }
+    }while(choice != 0);
 
     return 0;
 }
