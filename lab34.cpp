@@ -38,6 +38,10 @@ public:
     void printGraph() {
         cout << "Graph's adjacency list:" << endl;
         for (int i = 0; i < adjList.size(); i++) {
+            if(adjList[i].empty()){
+                continue;
+            }
+
             cout << i << " --> ";
             for (Pair v : adjList[i])
                 cout << "(" << v.first << ", " << v.second << ") ";
