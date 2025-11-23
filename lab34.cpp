@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <climits>
 using namespace std;
 
 const int SIZE = 13;
@@ -133,6 +134,39 @@ public:
 
         cout << endl;
     }
+
+    // shortest path djikstra
+    void shortestPath(int start){
+        vector<int> dist(SIZE, INT_MAX);
+        priority_queue<Pair, vector<Pair>, greater<Pair>> pq;
+
+        dist[start] = 0;
+        pq.push({0, start});
+
+        while(!pq.empty()){
+            auto [d, u] = pq.top();
+            pq.pop();
+            
+            if(d > dist[u]) continue;
+
+            for(auto &edge : adjList[u]){
+                int v = edge.first;
+                int w = edge.second;
+
+                if (dist[u] + w < dist[v]) {
+                    dist[v] = dist[u] + w;
+                    pq.push({dist[v], v});
+                }
+            }
+        }
+
+        cout << "\nShortest path from node " << start << ":\n";
+        for (int v = 0; v < SIZE; v++) {
+            if (dist[v] != INT_MAX) {
+                cout << start << " -> " << v << " : " << dist[v] << endl;
+            }
+        }
+    }
 };
 
 int main() {
@@ -157,6 +191,8 @@ int main() {
 
     graph.DFS(0);
     graph.BFS(0);
+
+    graph.shortestPath(0);
 
     return 0;
 }
